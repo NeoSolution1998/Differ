@@ -1,0 +1,17 @@
+{
+    "name": "hexlet/code",
+    "description": "php-progect-lvl2",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "neosolution",
+            "email": "neosolution1998@gmail.com"
+        }
+    ],
+    "bin": [
+       "bin/gendiff"
+    ],
+    "require": {
+        "docopt/docopt": "^1.0"
+    }
+}
