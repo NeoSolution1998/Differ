@@ -1,5 +1,5 @@
 {
-    "name": "neosolution/code",
+    "name": "hexlet/code",
     "description": "php-progect-lvl2",
     "license": "MIT",
     "authors": [
@@ -8,8 +8,8 @@
             "email": "neosolution1998@gmail.com"
         }
     ],
-    "bin": [
-       "bin/gendiff"
+
+    "bin": ["bin/gendiff"
     ],
     "autoload": {
         "files": ["src/Differ.php"]
