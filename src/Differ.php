@@ -19,18 +19,17 @@ function genDiff($pathToFile1, $pathToFile2)
             if (array_key_exists($key, $file1) && array_key_exists($key, $file2)) {
                 if ($file1[$key] === $file2[$key]) {
                         $result = "{$key} {$file2[$key]}\n";
-		} else { 
-			$result = "- {$key} {$file1[$key]}\n";	
-                        $result .= "+ {$key} {$file2[$key]}\n";			
-                 }
+                } else {
+                        $result = "- {$key} {$file1[$key]}\n";
+                        $result .= "+ {$key} {$file2[$key]}\n";
+                }
             } elseif (array_key_exists($key, $file1) && !array_key_exists($key, $file2)) {
-	         $result = "- {$key} {$file1[$key]}\n";
+                $result = "- {$key} {$file1[$key]}\n";
             } else {
-                 $result = "+ {$key} {$file2[$key]}\n";
+                $result = "+ {$key} {$file2[$key]}\n";
             }
-	    $acc .= $result;
+            $acc .= $result;
             return $acc;
-	},      
-       	''
+        },
     );
 }
