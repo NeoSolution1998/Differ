@@ -12,12 +12,15 @@
     "bin": ["bin/gendiff"
     ],
     "autoload": {
-        "files": ["src/Differ.php"]
+        "files": ["src/Differ.php",
+		  "src/Parsers.php"		
+	]
     },
     "require": {
         "docopt/docopt": "^1.0",
         "funct/funct": "^1.5",
         "phpunit/phpunit": "^9.5",
-        "squizlabs/php_codesniffer": "^3.6"
+        "squizlabs/php_codesniffer": "^3.6",
+        "symfony/yaml": "^5.3"
     }
 }
