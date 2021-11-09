@@ -36,5 +36,5 @@ $args = Docopt::handle($doc, array('version'=>'gendiff 1.0'));
 $path1 = $args['<firstFile>'];
 $path2 = $args['<secondFile>'];
 
-echo genDiff($path1, $path2);
+print_r(genDiff($path1, $path2));
 
