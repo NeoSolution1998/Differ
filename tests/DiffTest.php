@@ -10,7 +10,9 @@ use function Differ\Differ\genDiff;
 {
     public function testGendiff(): void
     {
-        $result = genDiff('/home/neosolution/php-project-lvl2/tests/fixtures/before.json', '/home/neosolution/php-project-lvl2/tests/fixtures/after.json');
-	$this->assertEquals($result, genDiff('/home/neosolution/php-project-lvl2/tests/fixtures/before.json', '/home/neosolution/php-project-lvl2/tests/fixtures/after.json'));	
-     }
+	$path1 = "/home/neosolution/php-project-lvl2/tests/fixtures/before.json";
+	$path2 = '/home/neosolution/php-project-lvl2/tests/fixtures/after.json';
+	$result = genDiff($path1, $path2);
+	$this->assertEquals($result, genDiff($path1, $path2));
+    }
 }

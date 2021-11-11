@@ -6,6 +6,7 @@ use Docopt;
 
 use function Funct\Collection\union;
 use function Differ\parsers\parse;
+use function Differ\Formatter\Stylish\renderStylish;
 
 function genDiff($pathToFile1, $pathToFile2) 
 {	
@@ -19,7 +20,8 @@ function genDiff($pathToFile1, $pathToFile2)
     $data2 = parse($afterFile, $format2);
 
     $tree = buildDiff($data1, $data2);
-    return $tree;
+    $jsonStr = renderStylish($tree);
+    return $jsonStr;
 }
 
     function node (string $key, string $type, $oldValue, $newValue, array $children = [])
