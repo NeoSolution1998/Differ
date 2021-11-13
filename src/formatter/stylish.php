@@ -2,7 +2,6 @@
 
 namespace Differ\Formatter\Stylish;
 
-
 ///////////////////////////////////////
 // Получает дерево и дает json строку//
 ///////////////////////////////////////
@@ -14,7 +13,6 @@ function renderStylish(array $tree): string
     return $jsonStr;
 }
 
-
 /////////////////////////////////////////////////////////////////////////////////////
 // Получает массив-дерево с описанием элементов и преобразует в массив json формата//
 /////////////////////////////////////////////////////////////////////////////////////
@@ -23,7 +21,6 @@ function render($array)
     $jsonArray = array_reduce(
         $array,
         function ($acc, $key) {
-////////////////////////////////////////////////////////////////
             if ($key['type'] == 'added') {
                 if (is_array($key['oldValue'])) {
                     $acc[] = "- {$key['key']}: {";
@@ -38,7 +35,6 @@ function render($array)
                 }
                 $acc[] = "- {$key['key']}: {$key['newValue']}";
                 return $acc;
-////////////////////////////////////////////////////////////////
             } elseif ($key['type'] == 'unchanged') {
                 if (is_array($key['oldValue'])) {
                     $acc[] = "+ {$key['key']}: {";
@@ -53,7 +49,6 @@ function render($array)
                 }
                 $acc[] = "  {$key['key']}: {$key['oldValue']}";
                 return $acc;
-////////////////////////////////////////////////////////////////
             } elseif ($key['type'] == 'changed') {
                 if (is_array($key['oldValue'])) {
                     $acc[] = "- {$key['key']}: {$key['newValue']}";
@@ -71,7 +66,6 @@ function render($array)
                 $acc[] = "- {$key['key']}: {$key['newValue']}";
                 $acc[] = "+ {$key['key']}: {$key['oldValue']}";
                 return $acc;
-////////////////////////////////////////////////////////////////
             } elseif ($key['type'] == 'deleted') {
                 if (is_array($key['oldValue'])) {
                     $acc[] = "+ {$key['key']}: {";
@@ -86,7 +80,6 @@ function render($array)
                 }
                 $acc[] = "+ {$key['key']}: {$key['oldValue']}";
                 return $acc;
-////////////////////////////////////////////////////////////////
             } elseif ($key['type'] == 'nested') {
                 $acc[] = "  {$key['key']}: {";
                 $acc[] = render($key['children']);
@@ -107,7 +100,8 @@ function render($array)
 // Получает вложенный массив и преобразует его в одномерный массив в формате json//
 // Работает вместе с Render                                                      //
 ///////////////////////////////////////////////////////////////////////////////////
-function getJsonString(array $array) : array
+
+function getJsonString(array $array): array
 {
     $deleteSymbol = ['"', ','];
     $array = json_encode($array, JSON_PRETTY_PRINT);
@@ -118,11 +112,11 @@ function getJsonString(array $array) : array
     return array_filter($result);
 }
 
-
 /////////////////////////////////////////////////////
 // Получает массив и преобразует его в json строку //
 /////////////////////////////////////////////////////
-function getJsonStr(array $arr) : string
+
+function getJsonStr(array $arr): string
 {
     $jsonStr = json_encode($arr, JSON_PRETTY_PRINT);
     $deleteSymbol = ['"', ',', '[', ']'];
@@ -130,11 +124,11 @@ function getJsonStr(array $arr) : string
     return getResult($jsonStr);
 }
 
-
 //////////////////////////////////////////////////////
 // Получает json строку и правильно подбирает оступы//
 //////////////////////////////////////////////////////
-function getResult(string $jsonStr) : string
+
+function getResult(string $jsonStr): string
 {
     $array = explode("\n", $jsonStr);
 
@@ -172,28 +166,34 @@ function getResult(string $jsonStr) : string
     return implode("\n", $result);
 }
 
-
 //////////////////////////////////////////////////////////
 // Получает индекс и операнд и выдает правильные отступы//
 //////////////////////////////////////////////////////////
-function getSpace(int $int, string $symbol) : string
+
+function getSpace(int $int, string $symbol): string
 {
     $operands = ['-', '+'];
 
-    if ($int == 0) return '    ';
-
+    if ($int == 0) {
+        return '    ';
+    }
     if ($int == 1) {
-        if ($symbol == '}') return "        ";
+        if ($symbol == '}') {
+            return "        ";
+        }
         return in_array($symbol, $operands) ? '  ' : "    ";
     } elseif ($int == 2) {
-        if ($symbol == '}') return "            ";
+        if ($symbol == '}') {
+            return "            ";
+        }
         return in_array($symbol, $operands) ? '      ' : "        ";
     }
 
-    if ($int == 3) return in_array($symbol, $operands) ? '          ' : "            ";
-    elseif ($int == 4) return in_array($symbol, $operands) ? '              ' : "                ";
-    elseif ($int == 5) return in_array($symbol, $operands) ? '                  ' : "                    ";
+    if ($int == 3) {
+        return in_array($symbol, $operands) ? '          ' : "            ";
+    } elseif ($int == 4) {
+        return in_array($symbol, $operands) ? '              ' : "                ";
+    } elseif ($int == 5) {
+        return in_array($symbol, $operands) ? '                  ' : "                    ";
+    }
 }
-//////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////
-
