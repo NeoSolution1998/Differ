@@ -8,6 +8,7 @@ use function Funct\Collection\union;
 use function Differ\parsers\parse;
 use function Differ\Formatter\Stylish\renderStylish;
 use function Differ\Formatter\Plain\renderPlain;
+use function Differ\Formatter\Json\renderJson;
 
 function genDiff($pathToFile1, $pathToFile2, $format = 'stylish')
 {
@@ -25,6 +26,9 @@ function genDiff($pathToFile1, $pathToFile2, $format = 'stylish')
     switch ($format) {
         case 'plain':
             $result = renderPlain($tree);
+            break;
+        case 'json':
+            $result = renderJson($tree);
             break;
         default:
             $result = renderStylish($tree);
