@@ -12,8 +12,8 @@ use function Differ\Formatter\Json\renderJson;
 
 function genDiff($pathToFile1, $pathToFile2, $format = 'stylish')
 {
-    $beforeFile = file_get_contents($pathToFile1);
-    $afterFile = file_get_contents($pathToFile2);
+    $beforeFile = file_get_contents($pathToFile2);
+    $afterFile = file_get_contents($pathToFile1);
 
     $format1 = pathinfo($pathToFile1, PATHINFO_EXTENSION);
     $format2 = pathinfo($pathToFile2, PATHINFO_EXTENSION);
