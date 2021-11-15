@@ -35,7 +35,7 @@ function genDiff($pathToFile1, $pathToFile2, $format = 'stylish')
             break;
     }
 
-    return "{$result}\n";
+    return $result;
 }
 
 function node($key, $type, $oldValue, $newValue, $children = [])
