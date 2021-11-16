@@ -5,11 +5,10 @@ namespace Differ\Differ;
 use Docopt;
 
 use function Funct\Collection\union;
-use function Differ\parsers\parse;
+use function Differ\Parsers\parse;
 use function Differ\Formatter\Stylish\renderStylish;
 use function Differ\Formatter\Plain\renderPlain;
 use function Differ\Formatter\Json\renderJson;
-use function Differ\Formatter\Pretty\renderPrettyDiff;
 
 function genDiff($pathToFile1, $pathToFile2, $format = 'stylish')
 {
@@ -32,7 +31,7 @@ function genDiff($pathToFile1, $pathToFile2, $format = 'stylish')
             $result = renderJson($tree);
             break;
         default:
-            $result = renderPrettyDiff($tree);
+            $result = renderStylish($tree);
             break;
     }
 
