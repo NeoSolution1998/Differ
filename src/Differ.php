@@ -9,6 +9,7 @@ use function Differ\parsers\parse;
 use function Differ\Formatter\Stylish\renderStylish;
 use function Differ\Formatter\Plain\renderPlain;
 use function Differ\Formatter\Json\renderJson;
+use function Differ\Formatter\Pretty\renderPrettyDiff;
 
 function genDiff($pathToFile1, $pathToFile2, $format = 'stylish')
 {
@@ -22,7 +23,7 @@ function genDiff($pathToFile1, $pathToFile2, $format = 'stylish')
     $data2 = parse($afterFile, $format2);
 
     $tree = buildDiff($data1, $data2);
-
+ 
     switch ($format) {
         case 'plain':
             $result = renderPlain($tree);
@@ -31,7 +32,7 @@ function genDiff($pathToFile1, $pathToFile2, $format = 'stylish')
             $result = renderJson($tree);
             break;
         default:
-            $result = renderStylish($tree);
+            $result = renderPrettyDiff($tree);
             break;
     }
 

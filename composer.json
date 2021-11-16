@@ -16,7 +16,8 @@
 		  "src/Parsers.php",
   		  "src/formatter/stylish.php",
 		  "src/formatter/plain.php",
-		  "src/formatter/json.php" 
+		  "src/formatter/json.php",
+		  "src/formatter/pretty.php" 
 	]
     },
     "require": {
