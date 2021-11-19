@@ -4,8 +4,6 @@ namespace Differ\Differ;
 
 use Docopt;
 
-use function Funct\Collection\union;
-use function Funct\Collection\sortBy;
 use function Differ\Parsers\parse;
 use function Differ\Formatter\Stylish\renderStylish;
 use function Differ\Formatter\Plain\renderPlain;
@@ -92,4 +90,30 @@ function getTree(object $objBefore, object $objAfter): array
         $sortedUnicKey
     );
     return $tree;
+}
+
+function sortBy($collection, $sortBy, $sortFunction = 'asort')
+{
+    if (false === is_callable($sortBy)) {
+        $sortBy = function ($item) use ($sortBy) {
+            return $item[$sortBy];
+        };
+    }
+
+    $values = array_map($sortBy, $collection);
+    $sortFunction($values);
+
+    $result = [];
+    foreach ($values as $key => $value) {
+        $result[$key] = $collection[$key];
+    }
+
+    return $result;
+}
+
+function union($collectionFirst, $collectionSecond)
+{
+    $result = call_user_func_array('array_merge', func_get_args());
+
+    return array_unique($result);
 }

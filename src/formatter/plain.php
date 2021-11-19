@@ -2,8 +2,6 @@
 
 namespace Differ\Formatter\Plain;
 
-use function Funct\Collection\flattenAll;
-
 function renderPlain($tree)
 {
     $result = function ($node, $path = '') use (&$result) {
@@ -62,4 +60,19 @@ function getValuePlain($value)
         return 0;
     }
     return "'$value'";
+}
+
+function flattenAll($collection)
+{
+    $result = [];
+
+    foreach ($collection as $value) {
+        if (is_array($value)) {
+            $result = array_merge($result, flattenAll($value));
+        } else {
+            $result[] = $value;
+        }
+    }
+
+    return $result;
 }

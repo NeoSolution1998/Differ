@@ -38,3 +38,4 @@ $path2 = $args['<secondFile>'];
 $format = $args['--format'];
 
 print_r(genDiff($path1, $path2, $format));
+

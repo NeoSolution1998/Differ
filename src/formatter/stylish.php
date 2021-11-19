@@ -2,8 +2,6 @@
 
 namespace Differ\Formatter\Stylish;
 
-use function Funct\Collection\flattenAll;
-
 function renderStylish(array $tree): string
 {
     $array = json_decode(json_encode($tree), true);
@@ -148,4 +146,19 @@ function getJsonStr($arrayJson)
         return $item;
     }, $result);
     return implode("\n", $result);
+}
+
+function flattenAll($collection)
+{
+    $result = [];
+
+    foreach ($collection as $value) {
+        if (is_array($value)) {
+            $result = array_merge($result, flattenAll($value));
+        } else {
+            $result[] = $value;
+        }
+    }
+
+    return $result;
 }
