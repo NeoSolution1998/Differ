@@ -5,10 +5,12 @@ namespace Differ\Differ;
 use Docopt;
 
 use function Funct\Collection\union;
+use function Funct\Collection\sortBy;
 use function Differ\Parsers\parse;
 use function Differ\Formatter\Stylish\renderStylish;
 use function Differ\Formatter\Plain\renderPlain;
 use function Differ\Formatter\Json\renderJson;
+
 
 function genDiff($pathToFile1, $pathToFile2, $format = 'stylish')
 {
@@ -21,7 +23,7 @@ function genDiff($pathToFile1, $pathToFile2, $format = 'stylish')
     $data1 = parse($beforeFile, $format1);
     $data2 = parse($afterFile, $format2);
 
-    $tree = buildDiff($data1, $data2);
+    $tree = getTree($data1, $data2);
  
     switch ($format) {
         case 'plain':
@@ -38,36 +40,58 @@ function genDiff($pathToFile1, $pathToFile2, $format = 'stylish')
     return $result;
 }
 
-function node($key, $type, $oldValue, $newValue, $children = [])
+function getTree(object $objBefore, object $objAfter) : array
 {
-    return [
-        'key' => $key,
-        'type' => $type,
-        'oldValue' => $oldValue,
-        'newValue' => $newValue,
-        'children' => $children,
-    ];
+    $unicKey = union(array_keys(get_object_vars($objBefore)), array_keys(get_object_vars($objAfter)));
+
+    $sortedUnicKey = array_values(
+        sortBy(
+            $unicKey,
+            function ($key) {
+                return $key;
+            }
+        )
+    );
+
+    $tree = array_map(
+        function ($key) use ($objBefore, $objAfter) {
+            if (!property_exists($objAfter, $key)) {
+                return [
+                    'name' => $key,
+                    'type' => 'removed',
+                    'value' => $objBefore->$key
+                ];
+            }
+            if (!property_exists($objBefore, $key)) {
+                return [
+                    'name' => $key,
+                    'type' => 'added',
+                    'value' => $objAfter->$key
+                ];
+            }
+            if (is_object($objBefore->$key) && is_object($objAfter->$key)) {
+                return [
+                    'name' => $key,
+                    'type' => 'nested',
+                    'children' => getTree($objBefore->$key, $objAfter->$key)
+                ];
+            }
+            if ($objBefore->$key !== $objAfter->$key) {
+                return [
+                    'name' => $key,
+                    'type' => 'changed',
+                    'valueBefore' => $objBefore->$key,
+                    'valueAfter' => $objAfter->$key
+                ];
+            }
+            return [
+                'name' => $key,
+                'type' => 'unchanged',
+                'value' => $objBefore->$key
+            ];
+        },
+        $sortedUnicKey
+    );
+    return $tree;
 }
 
-function buildDiff($data1, $data2)
-{
-    $keys1 = array_keys((array) $data1);
-    $keys2 =  array_keys((array) $data2);
-    $keys = union($keys1, $keys2);
-    sort($keys);
-    return array_map(function ($key) use ($data1, $data2) {
-        if (!property_exists($data1, $key)) {
-            return node($key, 'added', null, $data2->$key);
-        }
-        if (!property_exists($data2, $key)) {
-            return node($key, 'deleted', $data1->$key, null);
-        }
-        if (is_object($data1->$key) && is_object($data2->$key)) {
-            return node($key, 'nested', null, null, buildDiff($data1->$key, $data2->$key));
-        }
-        if ($data1->$key == $data2->$key) {
-            return node($key, 'unchanged', $data1->$key, null);
-        }
-            return node($key, 'changed', $data1->$key, $data2->$key);
-    }, $keys);
-}
