@@ -140,6 +140,6 @@ function getJsonStr($arrayJson)
         },
         ['{']
     );
-    $result[] = "} \n";
+    $result[] = "}";
     return implode("\n", $result);
 }
