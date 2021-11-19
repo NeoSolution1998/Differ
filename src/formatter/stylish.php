@@ -4,7 +4,7 @@ namespace Differ\Formatter\Stylish;
 
 use function Funct\Collection\flattenAll;
 
-function renderStylish(array $tree) : string
+function renderStylish(array $tree): string
 {
     $array = json_decode(json_encode($tree), true);
     $jsonArray = render($array);
@@ -116,7 +116,7 @@ function getSpace($int, $operand)
 function getJsonStr($arrayJson)
 {
     $arrayJson = flattenAll($arrayJson);
-    $arrayJson = array_map(function ($item) { return trim($item); }, $arrayJson);
+    $arrayJson = array_map(fn($item) => trim($item), $arrayJson);
     $index = 0;
     $result = array_reduce(
         $arrayJson,
@@ -141,11 +141,11 @@ function getJsonStr($arrayJson)
         ['{']
     );
     $result[] = "}";
-    $result = array_map(function ($item){
+    $result = array_map(function ($item) {
         if ($item[-1] == ":") {
-	    return $item . " ";
-	}
-	return $item;
+            return $item . " ";
+        }
+        return $item;
     }, $result);
     return implode("\n", $result);
 }

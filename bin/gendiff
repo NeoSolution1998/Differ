@@ -1,5 +1,4 @@
 #!/usr/bin/env php
-
 <?php
 
 use function Differ\Differ\genDiff;
@@ -18,6 +17,7 @@ if (file_exists($autoloadPath1)) {
 
 
 $doc = <<<DOCOPT
+
 Generate diff
 
 Usage:

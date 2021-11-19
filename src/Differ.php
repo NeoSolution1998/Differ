@@ -11,7 +11,6 @@ use function Differ\Formatter\Stylish\renderStylish;
 use function Differ\Formatter\Plain\renderPlain;
 use function Differ\Formatter\Json\renderJson;
 
-
 function genDiff($pathToFile1, $pathToFile2, $format = 'stylish')
 {
     $beforeFile = file_get_contents($pathToFile1);
@@ -24,7 +23,7 @@ function genDiff($pathToFile1, $pathToFile2, $format = 'stylish')
     $data2 = parse($afterFile, $format2);
 
     $tree = getTree($data1, $data2);
- 
+
     switch ($format) {
         case 'plain':
             $result = renderPlain($tree);
@@ -40,7 +39,7 @@ function genDiff($pathToFile1, $pathToFile2, $format = 'stylish')
     return $result;
 }
 
-function getTree(object $objBefore, object $objAfter) : array
+function getTree(object $objBefore, object $objAfter): array
 {
     $unicKey = union(array_keys(get_object_vars($objBefore)), array_keys(get_object_vars($objAfter)));
 
@@ -94,4 +93,3 @@ function getTree(object $objBefore, object $objAfter) : array
     );
     return $tree;
 }
-
