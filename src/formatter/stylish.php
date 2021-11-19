@@ -65,6 +65,8 @@ function getValue($value, $name)
         return $name . ' false';
     } elseif (is_null($value)) {
         return $name . ' null';
+    } elseif ($value == "") {
+        return "{$name} {$value}";
     } elseif (is_string($value) || is_int($value)) {
         return "{$name} {$value}";
     }
