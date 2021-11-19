@@ -65,11 +65,9 @@ function getValue($value, $name)
         return $name . ' false';
     } elseif (is_null($value)) {
         return $name . ' null';
-    } elseif ($value == "") {
-        return "{$name} {$value}";
     } elseif (is_string($value) || is_int($value)) {
         return "{$name} {$value}";
-    }
+    } elseif (is_object($value) || is_array($value)) {
 
     $value = json_encode($value, JSON_PRETTY_PRINT);
     $arr = ['"', ','];
@@ -84,6 +82,9 @@ function getValue($value, $name)
     }
     $result[] = '}';
     return $result;
+    }
+
+    return "{$name} {$value}";
 }
 
 function getSpace($int, $operand)
