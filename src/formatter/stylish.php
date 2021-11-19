@@ -65,8 +65,6 @@ function getValue($value, $name)
         return $name . ' false';
     } elseif (is_null($value)) {
         return $name . ' null';
-    } elseif ($value === "") {
-        return $name . ' ';
     } elseif (is_string($value) || is_int($value)) {
         return "{$name} {$value}";
     }
@@ -143,5 +141,11 @@ function getJsonStr($arrayJson)
         ['{']
     );
     $result[] = "}";
+    $result = array_map(function ($item){
+        if ($item[-1] == ":") {
+	    return $item . " ";
+	}
+	return $item;
+    }, $result);
     return implode("\n", $result);
 }
