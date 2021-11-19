@@ -58,6 +58,8 @@ function getValuePlain($value)
         return 'false';
     } elseif ($value === null) {
         return 'null';
+    } elseif ($value === 0) {
+        return 0;
     }
     return "'$value'";
 }
