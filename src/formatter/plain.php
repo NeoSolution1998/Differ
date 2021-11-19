@@ -4,50 +4,60 @@ namespace Differ\Formatter\Plain;
 
 use function Funct\Collection\flattenAll;
 
-///////////////////////////////////////////////////////////////////////
-// Получает дерево и дает информацию в формате Plain (плоский вывод) //
-///////////////////////////////////////////////////////////////////////
 function renderPlain($tree)
 {
-    $iter = function ($node, $path = '') use (&$iter) {
+    $result = function ($node, $path = '') use (&$result) {
         return array_map(
-            function ($item) use ($iter, $path) {
-                ['key' => $key, 'type' => $type, 'oldValue' => $oldValue, 'newValue' => $newValue] = $item;
-                $propertyName = "{$path}{$key}";
-                $newValue = getValue($newValue);
-                $oldValue = getvalue($oldValue);
-                if ($type == 'changed') {
-                    return "Property '{$propertyName}' was updated. From {$newValue} to {$oldValue}";
-                } elseif ($type == 'deleted') {
-                    return "Property '{$propertyName}' was added with value: {$oldValue}";
-                } elseif ($type == 'added') {
-                    return "Property '{$propertyName}' was removed";
-                } elseif ($type == 'unchanged') {
-                    return [];
-                } elseif ($type == 'nested') {
-                    return $iter($item['children'], "{$path}{$key}.");
+            function ($item) use ($result, $path) {
+                $name = $item['name'];
+                $type = $item['type'];
+                $propertyName = "{$path}{$name}";
+
+                switch ($type) {
+                    case 'added':
+                        $value = getValuePlain($item['value']);
+                        return "Property '{$propertyName}' was added with value: {$value}";
+                        break;
+
+                    case 'removed':
+                        $value = getValuePlain($item['value']);
+                        return "Property '{$propertyName}' was removed";
+                        break;
+
+                    case 'changed':
+                        $oldValue = getValuePlain($item['valueBefore']);
+                        $newValue = getValuePlain($item['valueAfter']);
+                        return "Property '{$propertyName}' was updated. From {$oldValue} to {$newValue}";
+                        break;
+
+                    case 'unchanged':
+                        return [];
+                        break;
+
+                    case 'nested':
+                        return $result($item['children'], "{$path}{$name}.");
+                        break;
                 }
             },
             $node
         );
     };
-    $flattened = flattenAll($iter($tree));
+    $flattened = flattenAll($result($tree));
     return implode("\n", $flattened);
 }
 
-////////////////////////////////////////////////////
-// Получает значение и формирует строку для вывода//
-////////////////////////////////////////////////////
-
-function getValue($value)
+function getValuePlain($value)
 {
     if (is_array($value) || is_object($value)) {
         return '[complex value]';
     }
 
-    if (is_bool($value)) {
-        return $value ? true : false;
+    if (is_bool($value) & $value == true) {
+        return 'true';
+    } elseif (is_bool($value) & $value == false) {
+        return 'false';
+    } elseif ($value === null) {
+        return 'null';
     }
-
     return "'$value'";
 }
