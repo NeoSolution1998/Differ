@@ -10,8 +10,8 @@ use function Differ\Differ\genDiff;
 {
     public function testGendiff(): void
     {
-        $path1 = "/home/neosolution/php-project-lvl2/tests/fixtures/before.json";
-        $path2 = '/home/neosolution/php-project-lvl2/tests/fixtures/after.json';
+        $path1 = __DIR__ . "/fixtures/before.json";
+        $path2 = __DIR__ . '/fixtures/after.json';
 
         $result1 = genDiff($path1, $path2, 'json');
         $this->assertEquals($result1, genDiff($path1, $path2, 'json'));
